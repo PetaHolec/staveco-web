@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poptávka – STAVECO Morava</title>
+  <meta name="description" content="Pošlete poptávku nebo výkres STAVECO Morava – sila, nádrže, ocelové konstrukce, řezání, tryskání a lakování.">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap&subset=latin-ext" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=3">
+  <link rel="icon" type="image/png" href="/assets/img/logo-znak.png">
+  <script src="/assets/js/main.js?v=3" defer></script>
+</head>
+<body data-section="poptavka">
+<a class="skip-link" href="#obsah">Přeskočit na obsah</a>
+<!-- @header -->
+<script>document.documentElement.classList.add('js');</script>
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="site-header__logo" href="/"><img src="/assets/img/logo-orez.png" width="1713" height="213" alt="STAVECO Morava – úvodní stránka"></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hlavni-navigace"><span class="nav-toggle__icon" aria-hidden="true"></span>Menu</button>
+    <nav class="site-nav" id="hlavni-navigace" aria-label="Hlavní navigace">
+      <ul class="site-nav__list">
+        <li><a class="site-nav__link" href="/produkty/" data-section="vyrobky">Výrobky</a></li>
+        <li><a class="site-nav__link" href="/sluzby/" data-section="sluzby">Služby</a></li>
+        <li><a class="site-nav__link" href="/profil-firmy/" data-section="o-firme">O firmě</a></li>
+        <li><a class="site-nav__link" href="/certifikaty/" data-section="certifikaty">Certifikáty</a></li>
+        <li><a class="site-nav__link" href="/kontakty/" data-section="kontakt">Kontakt</a></li>
+      </ul>
+      <a class="btn btn--small site-nav__cta" href="/poptavka/" data-section="poptavka" aria-current="page">Poptat zakázku</a>
+    </nav>
+  </div>
+</header>
+<!-- /@header -->
+<main id="obsah" tabindex="-1">
+  <div class="container">
+    <header class="page-head">
+      <nav class="breadcrumbs" aria-label="Drobečková navigace">
+        <ol>
+          <li><a href="/">Úvod</a></li>
+          <li aria-current="page">Poptávka</li>
+        </ol>
+      </nav>
+      <h1 class="page-head__title">Poptávka</h1>
+      <p class="page-head__lede">Pošlete nám zadání nebo výkres. Stačí předmět, jméno, e-mail a popis zakázky.</p>
+    </header>
+    <div class="split split--7-5 split--start">
+      <div>
+        <form class="form" action="/api/poptavka" method="post" enctype="multipart/form-data" data-form="poptavka" data-endpoint="/api/poptavka" data-fallback-email="info@staveco.cz">
+          <div class="form-status" data-form-status hidden></div>
+          <div class="field">
+            <label class="field__label" for="pf-predmet">Předmět<span class="field__req" aria-hidden="true">*</span></label>
+            <p class="field__hint" id="pf-predmet-napoveda">Např. název výrobku nebo služby.</p>
+            <input class="field__input" id="pf-predmet" name="predmet" type="text" maxlength="200" required data-prefill="predmet" aria-describedby="pf-predmet-napoveda">
+            <p class="field__error" id="pf-predmet-chyba"></p>
+          </div>
+          <div class="form__row">
+            <div class="field">
+              <label class="field__label" for="pf-jmeno">Jméno a příjmení<span class="field__req" aria-hidden="true">*</span></label>
+              <input class="field__input" id="pf-jmeno" name="jmeno" type="text" autocomplete="name" maxlength="200" required>
+              <p class="field__error" id="pf-jmeno-chyba"></p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="pf-email">E-mail<span class="field__req" aria-hidden="true">*</span></label>
+              <input class="field__input" id="pf-email" name="email" type="email" autocomplete="email" maxlength="200" required>
+              <p class="field__error" id="pf-email-chyba"></p>
+            </div>
+          </div>
+          <div class="form__row">
+            <div class="field">
+              <label class="field__label" for="pf-firma">Firma <span class="field__optional">(nepovinné)</span></label>
+              <input class="field__input" id="pf-firma" name="firma" type="text" autocomplete="organization" maxlength="200">
+            </div>
+            <div class="field">
+              <label class="field__label" for="pf-telefon">Telefon <span class="field__optional">(nepovinné)</span></label>
+              <input class="field__input" id="pf-telefon" name="telefon" type="tel" autocomplete="tel" maxlength="40">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="pf-popis">Popis zakázky<span class="field__req" aria-hidden="true">*</span></label>
+            <p class="field__hint" id="pf-popis-napoveda">Rozměry, materiál, množství, termín, místo dodání.</p>
+            <textarea class="field__textarea" id="pf-popis" name="popis" rows="7" maxlength="5000" required aria-describedby="pf-popis-napoveda"></textarea>
+            <p class="field__error" id="pf-popis-chyba"></p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="pf-priloha">Výkresy a podklady <span class="field__optional">(nepovinné)</span></label>
+            <p class="field__hint" id="pf-priloha-napoveda">Můžete vybrat více souborů. Typy PDF, DWG, DXF, STEP/STP, JPG nebo PNG, každý soubor nejvýše 20&nbsp;MB. Větší soubory pošlete e-mailem.</p>
+            <input class="field__file" id="pf-priloha" name="priloha[]" type="file" multiple accept=".pdf,.dwg,.dxf,.step,.stp,.jpg,.jpeg,.png" data-max-size="20971520" aria-describedby="pf-priloha-napoveda">
+            <p class="field__error" id="pf-priloha-chyba"></p>
+          </div>
+          <div class="form__actions">
+            <button class="btn btn--large" type="submit" data-sending-label="Odesílám…">Odeslat poptávku</button>
+            <p class="form__note">Pole označená <span class="field__req" aria-hidden="true">*</span><span class="visually-hidden">hvězdičkou</span> jsou povinná.</p>
+          </div>
+          <p class="form__note">Údaje z formuláře použijeme k vyřízení poptávky. Podrobnosti najdete v <a href="/dokumenty/zasady-ochrany-osobnich-udaju/">Zásadách ochrany osobních údajů</a>.</p>
+        </form>
+        <div class="form-success" data-form-success hidden>
+          <h2 class="form-success__title">Poptávka byla odeslána</h2>
+          <p>Děkujeme. Ozveme se vám na uvedený e-mail.</p>
+          <p><a href="/">Zpět na úvod</a></p>
+        </div>
+      </div>
+      <aside class="inquiry-aside" aria-labelledby="poptavka-jinak">
+        <h2 class="inquiry-aside__title" id="poptavka-jinak">Raději e-mailem nebo telefonem?</h2>
+        <p class="inquiry-aside__email"><a href="mailto:info@staveco.cz">info@staveco.cz</a></p>
+        <p>tel. <a href="tel:+420546421518">+420&nbsp;546&nbsp;421&nbsp;518</a></p>
+        <h3 class="inquiry-aside__sub">Obchodní a technické dotazy</h3>
+        <p>Michal Kudláček, obchodní a technický ředitel<br>
+          tel. <a href="tel:+420602466272">+420&nbsp;602&nbsp;466&nbsp;272</a><br>
+          <a href="mailto:kudlacek@staveco.cz">kudlacek@staveco.cz</a></p>
+        <p><a class="link-arrow" href="/kontakty/">Všechny kontakty</a></p>
+      </aside>
+    </div>
+  </div>
+</main>
+<!-- @footer -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__col">
+        <img class="site-footer__logo" src="/assets/img/logo-orez.png" width="1713" height="213" alt="" loading="lazy">
+        <p><strong>STAVECO Morava, spol. s r.o.</strong></p>
+        <address>
+          <p>Moravské Bránice 296<br>664 64 Moravské Bránice<br>Česká republika</p>
+        </address>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__title">Kontakt</h2>
+        <ul class="site-footer__list">
+          <li>tel. <a href="tel:+420546421518">+420&nbsp;546&nbsp;421&nbsp;518</a></li>
+          <li>tel. <a href="tel:+420546421852">+420&nbsp;546&nbsp;421&nbsp;852</a></li>
+          <li>fax +420&nbsp;546&nbsp;435&nbsp;384</li>
+          <li>e-mail <a href="mailto:info@staveco.cz">info@staveco.cz</a></li>
+        </ul>
+        <p class="site-footer__more"><a href="/kontakty/">Kontakty na vedení firmy</a></p>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__title">Firemní údaje</h2>
+        <p>IČO: 47908874<br>DIČ: CZ47908874</p>
+        <p class="site-footer__muted">Společnost je zapsána u Krajského soudu v Brně, oddíl C, vložka 9684.</p>
+        <p><a href="/sluzby/prodejni-misto-linde-gas/">Prodejní místo Linde Gas</a><br><span class="site-footer__muted">po–pá 6:00–14:00</span></p>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__title">Dokumenty</h2>
+        <ul class="site-footer__list">
+          <li><a href="/dokumenty/vseobecne-dodaci-podminky/">Všeobecné dodací podmínky</a></li>
+          <li><a href="/dokumenty/zasady-ochrany-osobnich-udaju/">Ochrana osobních údajů</a></li>
+          <li><a href="/dokumenty/zasady-cookies/">Zásady cookies</a></li>
+          <li><a href="/certifikaty/">Certifikáty a osvědčení</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <p class="u-mb-0">© 2026 STAVECO Morava, spol. s r.o.</p>
+      <p class="u-mb-0"><a href="#obsah">Zpět nahoru</a></p>
+    </div>
+  </div>
+</footer>
+<!-- /@footer -->
+</body>
+</html>

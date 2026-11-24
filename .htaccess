@@ -1,0 +1,131 @@
+# =====================================================================
+# STAVECO Morava – Apache (2.4) konfigurace statického webu
+# Podrobnosti, zdůvodnění a ekvivalent pro Nginx: _podklady/presmerovani.md
+#
+# Vyžaduje AllowOverride FileInfo (ErrorDocument, Redirect*, Rewrite*, AddType).
+# Každý blok závislý na modulu je v <IfModule>, chybějící modul nezpůsobí chybu 500.
+# =====================================================================
+
+# ---------- Kódování a typy ----------
+AddDefaultCharset UTF-8
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType image/svg+xml .svg
+</IfModule>
+
+# ---------- Adresáře a koncové lomítko ----------
+# Stránky jsou <slug>/index.html. Výchozí chování Apache (mod_dir):
+#   DirectoryIndex index.html  → /produkty/minisila/ vrátí index.html
+#   DirectorySlash On          → /produkty/minisila (bez lomítka) = 301 na /produkty/minisila/
+# Obě hodnoty jsou výchozí, proto je tu nenastavujeme: v .htaccess vyžadují
+# AllowOverride Indexes a na hostingu bez něj by způsobily chybu 500.
+# Pokud server-level konfigurace hostingu DirectorySlash vypíná, odkomentujte:
+# <IfModule mod_dir.c>
+#   DirectoryIndex index.html
+#   DirectorySlash On
+# </IfModule>
+
+# ---------- Chybové stránky ----------
+ErrorDocument 404 /404.html
+
+<IfModule mod_alias.c>
+  # ---------- Interní složky projektu nejsou veřejné ----------
+  RedirectMatch 404 ^/(_podklady|_partials|tools)(/.*)?$
+  # skryté soubory (.htaccess, .git …) kromě /.well-known/
+  RedirectMatch 404 /\.(?!well-known(/|$))
+
+  # ---------- Jazykové verze: dočasně na českou úvodní stránku ----------
+  # 302 (ne 301): /en/ a /de/ se mají později vrátit jako skutečné jazykové verze.
+  RedirectMatch 302 ^/(en|de)(/.*)?$ /
+
+  # ---------- Obsah šablony WordPressu bez ekvivalentu → úvod (301) ----------
+  RedirectMatch 301 ^/portfolio(/.*)?$ /
+  RedirectMatch 301 ^/portfolio[_-]category(/.*)?$ /
+  RedirectMatch 301 ^/custom-footer/?$ /
+  RedirectMatch 301 ^/author(/.*)?$ /
+
+  # ---------- RSS kanály a WP sitemapy: zrušeno (410 Gone) ----------
+  RedirectMatch 410 ^/(.+/)?feed/?$
+  RedirectMatch 410 ^/wp-sitemap.*\.xml$
+
+  # ---------- Staré adresy dokumentů (PDF) → /dokumenty/ (301) ----------
+  # certifikáty odkazované z /certifikaty/
+  RedirectMatch 301 ^/wp-content/uploads/2024/04/ISO-9001-CZ\.pdf$ /dokumenty/certifikat-CSN-EN-ISO-9001-CZ.pdf
+  RedirectMatch 301 ^/wp-content/uploads/2024/04/EN-1090-CZ\.pdf$ /dokumenty/osvedceni-CSN-EN-1090-1-EXC2-CZ.pdf
+  RedirectMatch 301 ^/wp-content/uploads/2024/07/Certifikat-CSN-EN-ISO-3834-2\.pdf$ /dokumenty/certifikat-CSN-EN-ISO-3834-2-CZ.pdf
+  RedirectMatch 301 ^/wp-content/uploads/2024/07/Certifikate-AD-2000-Merkblatt-HP-0__-EN-13445-4-A\.pdf$ /dokumenty/certifikat-AD-2000-Merkblatt-HP-0-EN-13445-4.pdf
+  # starší české verze certifikátů v knihovně médií → aktuální dokument téhož typu
+  RedirectMatch 301 ^/wp-content/uploads/2024/03/ISO-9001-CZE-2\.pdf$ /dokumenty/certifikat-CSN-EN-ISO-9001-CZ.pdf
+  RedirectMatch 301 ^/wp-content/uploads/2024/03/EN-1090-1-CZE\.pdf$ /dokumenty/osvedceni-CSN-EN-1090-1-EXC2-CZ.pdf
+  # podmínky a zásady (patička, /kontakty/)
+  RedirectMatch 301 ^/wp-content/uploads/2024/07/Vseobecne-dodaci-podminky-STAVECO-Morava\.pdf$ /dokumenty/vseobecne-dodaci-podminky.pdf
+  RedirectMatch 301 ^/wp-content/uploads/2024/11/Zasady-ochrany-osobnich-udaju\.pdf$ /dokumenty/zasady-ochrany-osobnich-udaju.pdf
+  RedirectMatch 301 ^/wp-content/uploads/2024/11/Zasady-Cookies\.pdf$ /dokumenty/zasady-cookies.pdf
+  # starší jednostránkový dokument GDPR z /kontakty/ → aktuální zásady (k ověření, viz poznámky)
+  RedirectMatch 301 ^/wp-content/uploads/2024/07/OCHRANA-OSOBNICH-UDAJU\.pdf$ /dokumenty/zasady-ochrany-osobnich-udaju.pdf
+</IfModule>
+
+# ---------- Adresy WordPressu s parametrem (?page_id=, ?p=, ?feed=) ----------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  RewriteCond %{QUERY_STRING} (^|&)feed= [NC]
+  RewriteRule ^$ - [G,L]
+
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=(2066|2098)(&|$)
+  RewriteRule ^$ /? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=3731(&|$)
+  RewriteRule ^$ /profil-firmy/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=3733(&|$)
+  RewriteRule ^$ /certifikaty/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=3735(&|$)
+  RewriteRule ^$ /kontakty/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=6305(&|$)
+  RewriteRule ^$ /poptavka/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=3723(&|$)
+  RewriteRule ^$ /produkty/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=3725(&|$)
+  RewriteRule ^$ /produkty/sila-transportni-a-kontejnery/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=4433(&|$)
+  RewriteRule ^$ /produkty/sila-stacionarni/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=4812(&|$)
+  RewriteRule ^$ /produkty/minisila/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=5607(&|$)
+  RewriteRule ^$ /produkty/zasobniky-a-nasypky/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=5330(&|$)
+  RewriteRule ^$ /produkty/nadrze/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=5508(&|$)
+  RewriteRule ^$ /produkty/tlakove-nadoby-a-sila/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=5692(&|$)
+  RewriteRule ^$ /produkty/ocelove-konstrukce/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=5958(&|$)
+  RewriteRule ^$ /produkty/svarence/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=5820(&|$)
+  RewriteRule ^$ /produkty/potrubi-kominy/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=6284(&|$)
+  RewriteRule ^$ /produkty/strojne-technologicka-zarizeni/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=6048(&|$)
+  RewriteRule ^$ /produkty/dopravne-technologicka-zarizeni/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=6126(&|$)
+  RewriteRule ^$ /produkty/atypicke-vyrobky/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=3727(&|$)
+  RewriteRule ^$ /sluzby/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=4135(&|$)
+  RewriteRule ^$ /sluzby/vyroba-a-montaz/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=3729(&|$)
+  RewriteRule ^$ /sluzby/opravy-ocelovych-sil/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=4250(&|$)
+  RewriteRule ^$ /sluzby/rezani-plazmou-a-autogenem/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=4382(&|$)
+  RewriteRule ^$ /sluzby/tryskani-ocelovou-drti/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=4392(&|$)
+  RewriteRule ^$ /sluzby/lakovani/? [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|p)=4410(&|$)
+  RewriteRule ^$ /sluzby/prodejni-misto-linde-gas/? [R=301,L]
+
+  # ---------- Volitelně: kanonická doména (doplní provozovatel) ----------
+  # RewriteCond %{HTTPS} !=on [OR]
+  # RewriteCond %{HTTP_HOST} ^www\. [NC]
+  # RewriteRule ^ https://staveco.cz%{REQUEST_URI} [R=301,L]
+</IfModule>

@@ -1,0 +1,6 @@
+.DS_Store
+_site/
+_podklady/
+handoff-staveco.md
+.claude/
+__pycache__/

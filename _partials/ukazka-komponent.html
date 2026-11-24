@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Ukázka komponent – STAVECO Morava (interní)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap&subset=latin-ext" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=3">
+  <script src="/assets/js/main.js?v=3" defer></script>
+</head>
+<body>
+<!-- Interní ukázka komponent pro agenty podstránek. Není součástí webu (neodkazuje se na ni),
+     data jsou převzatá ze _podklady/obsah. Při nasazení tuto složku nenahrávat. -->
+<main id="obsah" class="container">
+  <header class="page-head">
+    <nav class="breadcrumbs" aria-label="Drobečková navigace">
+      <ol>
+        <li><a href="/">Úvod</a></li>
+        <li><a href="/sluzby/">Služby</a></li>
+        <li aria-current="page">Řezání plazmou a autogenem</li>
+      </ol>
+    </nav>
+    <h1 class="page-head__title">Řezání plazmou a autogenem</h1>
+    <p class="page-head__lede">Přesné řezání s vysokou kvalitou řezu.</p>
+  </header>
+
+  <dl class="facts">
+    <div class="facts__item"><dt class="facts__label">Plazma</dt><dd class="facts__value">do 25 mm</dd></div>
+    <div class="facts__item"><dt class="facts__label">Autogen</dt><dd class="facts__value">do 120 mm</dd></div>
+    <div class="facts__item"><dt class="facts__label">Pracovní stůl</dt><dd class="facts__value">2 000 × 6 000 mm</dd></div>
+  </dl>
+
+  <section class="section">
+    <div class="section__head"><h2>Tabulka parametrů (table.spec)</h2></div>
+    <table class="spec">
+      <caption>Sila stacionární – parametry</caption>
+      <tbody>
+        <tr><th scope="row">Provedení</th><td>jednokomorová, dvoukomorová, vícekomorová</td></tr>
+        <tr><th scope="row">Velikost typová</th><td class="num">5 až 100 m³</td></tr>
+        <tr><th scope="row">Minimální / maximální</th><td class="num">1 m³ / 500 m³</td></tr>
+        <tr><th scope="row">Materiál</th><td>uhlíkaté a nerezové oceli</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="section__head"><h2>Srovnávací tabulka (.spec--compare .spec--stack)</h2></div>
+    <table class="spec spec--compare spec--stack">
+      <caption>Transportní systémy – typové řady</caption>
+      <thead>
+        <tr><th scope="col">Systém</th><th scope="col">Typová řada (objem)</th><th scope="col">Počet velikostí</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Řetězový</th><td data-label="Typová řada">6 m³</td><td data-label="Počet velikostí" class="num">1</td></tr>
+        <tr><th scope="row">Kapsový</th><td data-label="Typová řada">12, 18, 20, 22 m³</td><td data-label="Počet velikostí" class="num">4</td></tr>
+        <tr><th scope="row">Hákový</th><td data-label="Typová řada">12,5, 18, 20, 22,5, 29, 32 m³</td><td data-label="Počet velikostí" class="num">6</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="section__head"><h2>Široká tabulka s posunem (.table-scroll)</h2></div>
+    <div class="table-scroll" data-label="Srovnání transportních systémů">
+      <div class="table-scroll__viewport">
+        <table class="spec spec--compare">
+          <thead>
+            <tr><th scope="col">Parametr</th><th scope="col">Řetězový</th><th scope="col">Kapsový</th><th scope="col">Hákový</th><th scope="col">Poznámka</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Typová řada</th><td>6 m³</td><td>12, 18, 20, 22 m³</td><td>12,5, 18, 20, 22,5, 29, 32 m³</td><td>dle staveco.cz</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section__head"><h2>Seznam odkazů a samostatný odkaz</h2></div>
+    <ul class="link-list">
+      <li class="link-list__item"><a class="link-list__link" href="/dokumenty/certifikat-CSN-EN-ISO-9001-CZ.pdf">ČSN EN ISO 9001</a><span class="link-list__meta">PDF</span></li>
+      <li class="link-list__item"><a class="link-list__link" href="/dokumenty/osvedceni-CSN-EN-1090-1-EXC2-CZ.pdf">ČSN EN 1090-1, EXC 2</a><span class="link-list__meta">PDF</span></li>
+    </ul>
+    <div class="aside-link">
+      <h3 class="aside-link__title"><a href="/sluzby/prodejni-misto-linde-gas/">Prodejní místo Linde Gas</a></h3>
+      <p class="aside-link__text">po–pá 6:00–14:00</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section__head"><h2>Galerie</h2></div>
+    <div class="gallery">
+      <figure class="gallery__item"><a class="gallery__link" href="/assets/img/zavod.jpg"><img src="/assets/img/zavod-1000.jpg" width="1000" height="450" alt="Výrobní hala" loading="lazy"></a><figcaption>Výrobní hala</figcaption></figure>
+      <figure class="gallery__item"><img src="/assets/img/vyroba-600.jpg" width="600" height="450" alt="Řezací pracoviště" loading="lazy"><figcaption>Řezací pracoviště</figcaption></figure>
+      <figure class="gallery__item"><img src="/assets/img/zavod-letecky-1000.jpg" width="1000" height="667" alt="Letecký pohled na závod" loading="lazy"><figcaption>Letecký pohled</figcaption></figure>
+    </div>
+    <p><a class="btn" href="/poptavka/?predmet=Test">Hlavní tlačítko</a> <a class="btn btn--secondary" href="#">Vedlejší</a> <a class="link-arrow" href="#">Odkaz se šipkou</a></p>
+  </section>
+</main>
+</body>
+</html>

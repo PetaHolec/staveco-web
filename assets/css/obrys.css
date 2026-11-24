@@ -1,0 +1,68 @@
+/* Obrys sil přes první snímek titulní oblasti (jen úvodní stránka).
+   Kontrakt: .hero__media je position:absolute + overflow:hidden, .hero__img 1. snímku má
+   object-fit:cover a object-position center. SVG má viewBox = pixely výřezu fotky
+   a preserveAspectRatio="xMidYMid slice", takže sedí na fotce při každém poměru stran oblasti.
+   Obrys leží nad tmavým závojem snímku (z-index ve styles.css), proto světlá linka.
+   Výchozí (= koncový) stav: obrys neviditelný, zůstává jen fotografie. */
+
+.hero__outline {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  --obrys-stroke: #fff;   /* nad závojem z --ink; akcent by na tmavém podkladu zanikal */
+  --obrys-speed: 1;
+}
+
+.hero__outline .obrys {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero__outline .obrys path {
+  fill: none;
+  stroke: var(--obrys-stroke);
+  /* šířka v jednotkách viewBoxu; obrys.js ji přepočítá na ~2 px na obrazovce.
+     (vector-effect: non-scaling-stroke nelze — Chrome by pak bral i stroke-dasharray
+     v px obrazovky a pathLength-animace by se rozpadla na tečky) */
+  stroke-width: var(--obrys-sw, 4);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* pathLength="1" na každé cestě → délky v jednotkách 0–1 */
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 0;
+}
+
+/* Jednorázové vykreslení (~0,7 s) a splynutí s fotkou (~0,5 s). Bez smyčky. */
+.hero__outline .obrys--draw {
+  animation: obrys-fade calc(0.5s * var(--obrys-speed)) ease-in-out calc(0.7s * var(--obrys-speed)) both;
+}
+.hero__outline .obrys--draw path {
+  animation: obrys-draw calc(0.7s * var(--obrys-speed)) cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* Jen pro kontrolu zarovnání (?obrys=hold): obrys zůstane viditelný. */
+.hero__outline .obrys--hold {
+  opacity: 1;
+}
+
+@keyframes obrys-draw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes obrys-fade {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__outline .obrys--draw,
+  .hero__outline .obrys--draw path {
+    animation: none;
+  }
+}
