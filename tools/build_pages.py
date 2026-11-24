@@ -26,7 +26,7 @@ EXCLUDE = {
 }
 
 # Atributy s jednou cestou: href="/…", src="/…", action="/…", data-*="/…"
-ATTR_RE = re.compile(r'\b(href|src|action|poster|data-(?!srcset")[a-z-]+)="/(?!/)')
+ATTR_RE = re.compile(r'\b(href|src|action|poster|data-(?!srcset=)[a-z-]+)="/(?!/)')
 # Atributy se seznamem cest: srcset="/a 500w, /b 800w"
 SRCSET_RE = re.compile(r'\b((?:data-)?srcset)="([^"]*)"')
 # CSS url(/…)
