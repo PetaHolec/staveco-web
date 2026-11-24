@@ -44,3 +44,11 @@ Hlavička a patička se upravují jen v `_partials/`. Potom spustit `python3 too
 Certifikáty a dokumenty: údaje jsou v `tools/make_docs.py`, stránky `/certifikaty/…` a `/dokumenty/…` se z nich generují (`python3 tools/make_docs.py`, pak `sync_partials.py`). Obrázky stran (`assets/img/dokumenty/`) jsou vykreslené z PDF. Po výměně PDF je potřeba je vykreslit znovu, třeba exportem z Náhledu do JPG 1600 px a 480 px na šířku. PDF se otevírá jen z podstránky konkrétního dokumentu.
 
 CSS a JS mají v odkazech `?v=3`. Při změně stylů nebo skriptů číslo zvyšte, aby návštěvníci nedostali starou verzi z mezipaměti. Komponenty CSS jsou popsané v komentáři na začátku `assets/css/styles.css`.
+
+## Náhled na GitHub Pages
+
+- Adresa: https://petaholec.github.io/staveco-web/ (repozitář `PetaHolec/staveco-web`, větev `main`).
+- Každý `git push` na `main` spustí `.github/workflows/pages.yml`: kontrola hlavičky a patičky, pak `tools/build_pages.py` sestaví `_site/` a nasadí ho.
+- Zdrojové stránky zůstávají s kořenovými odkazy (`/produkty/...`). Prefix `/staveco-web` doplní až `build_pages.py`. Na vlastní doméně stačí v workflow nastavit `--base ""`.
+- Do repozitáře nejdou `_podklady/` (741 MB) ani `handoff-staveco.md` (viz `.gitignore`).
+- Formulář poptávky na Pages nefunguje (chybí `/api/poptavka`), ukáže chybu s odkazem na info@staveco.cz.
